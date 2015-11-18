@@ -86,18 +86,21 @@ grid <- raster(volcano) * 0
 trigrid <- trifun(xy, z, grid)
 
 plot(trigrid)
+points(xy, pch =".")
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 ## Run with very few points
 
-We can see the triangles. 
+Carefully, keep points near the corners. We can see the triangles. 
 
 
 
 ```r
-xy0 <- xy[sample(nrow(xy), 15), ]
+corners <- xyFromCell(r, c(1, ncol(r), ncell(r) - ncol(r) + 1, ncell(r)))
+xy0 <- rbind(xy[sample(nrow(xy), 25), ], corners)
+xy0 <- xy0[!duplicated(xy0), ]
 z0 <- extract(r, xy0, method = "bilinear")
 trigrid0 <- trifun(xy0, z0, grid)
 
